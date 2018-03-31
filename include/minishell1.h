@@ -23,8 +23,9 @@ void del_elem_list(list_path **, char *);
 char *find_path(list_path *);
 int test_path(char **, char **, char **);
 void print_list(list_path *);
-void my_setenv(char **, list_path *);
-void no_tab_setenv(char **, list_path *);
+int my_setenv(char **, list_path *);
+int try_env(char **, list_path *);
+int no_tab_setenv(char **, list_path *);
 void the_cd(char *, list_path *);
 void my_setpath(char *, char *, list_path *);
 

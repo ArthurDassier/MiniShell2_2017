@@ -12,34 +12,13 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static int try_env(char **tab, list_path *my_env)
-{
-	if (my_strcmp(tab[0], "env") == 0 ||
-	(my_strcmp(tab[0], "setenv") == 0 && !tab[1])) {
-		print_list(my_env);
-		return (0);
-	}
-	if (my_strcmp(tab[0], "setenv") == 0) {
-		if (tab[2])
-			my_setenv(tab, my_env);
-		else
-			no_tab_setenv(tab, my_env);
-		return (0);
-	}
-	if (my_strcmp(tab[0], "unsetenv") == 0) {
-		if (!tab[1])
-			my_putstr("unsetenv: Too few arguments.\n");
-		else
-			del_elem_list(&my_env, tab[1]);
-		return (0);
-	}
-	return (1);
-}
-
 static int try_build(char **tab, list_path *my_env)
 {
-	if (try_env(tab, my_env) == 0)
-		return (0);
+	int	ret = 0;
+
+	ret = try_env(tab, my_env);
+	if (ret != -1)
+		return (ret);
 	if (my_strcmp(tab[0], "exit") == 0)
 		exit(my_getnbr(tab[1]));
 	if (my_strcmp(tab[0], "cd") == 0) {
