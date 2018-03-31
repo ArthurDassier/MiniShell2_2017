@@ -49,14 +49,20 @@ static char **reset_env(list_path *my_env, char **new_env)
 	return (new_env);
 }
 
-int command(list_path *my_env, char **com, char **new_env, char *str)
+static int command(list_path *my_env, char **com, char **new_env, char *str)
 {
-	char	**tab = my_str_to_wordtab(str);
+	char	**big_tab = my_path_to_wordtab(str, ';');
+	char	**tab;
 	int	ret = 0;
+	int	i = 0;
 
-	ret = try_build(tab, my_env);
-	if (ret == -1)
-		ret = test_path(tab, com, new_env);
+	while (big_tab[i]) {
+		tab = my_str_to_wordtab(big_tab[i]);
+		ret = try_build(tab, my_env);
+		if (ret == -1)
+			ret = test_path(tab, com, new_env);
+		++i;
+	}
 	return (ret);
 }
 
@@ -70,7 +76,7 @@ int shell(list_path *my_env, char **new_env)
 	while (42) {
 		new_env = reset_env(my_env, new_env);
 		path = find_path(my_env);
-		com = my_path_to_wordtab(path);
+		com = my_path_to_wordtab(path, ':');
 		my_putstr("[Darth_Shell]$> ");
 		str = get_next_line(0);
 		if (str == NULL) {

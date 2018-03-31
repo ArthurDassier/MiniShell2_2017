@@ -67,7 +67,7 @@ char *clean_str(char *str)
 	return (tmp);
 }
 
-char **my_path_to_wordtab(char *str)
+char **my_path_to_wordtab(char *str, char sep)
 {
 	char	**tab = malloc(sizeof(char *) * (count_word_path(str) + 1));
 	int	j = 0;
@@ -76,7 +76,7 @@ char **my_path_to_wordtab(char *str)
 	str = clean_str(str);
 	tab[col] = malloc(sizeof(char) * (my_strlen(str) + 1));
 	for (int i = 0; str[i] != '\0'; ++i) {
-		if (str[i] == ':') {
+		if (str[i] == sep) {
 			tab[col][j] = '\0';
 			++col;
 			j = 0;
