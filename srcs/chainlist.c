@@ -15,9 +15,10 @@ list_path *init_cl(char **env)
 
 	if (element == NULL)
 		return (NULL);
-	if (env[0] == NULL)
+	if (env[0] == NULL) {
+		my_puterror("You underestimate my power.\n");
 		exit(84);
-	else
+	} else
 		element->name = env[0];
 	element->next = NULL;
 	return (element);
