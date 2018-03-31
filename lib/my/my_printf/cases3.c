@@ -15,6 +15,14 @@ int case_xmaj(va_list ap)
 	return (0);
 }
 
+int case_e(va_list ap)
+{
+	char	*str = va_arg(ap, char *);
+
+	my_puterror(str);
+	return (0);
+}
+
 int my_error(char str)
 {
 	my_putchar('%');

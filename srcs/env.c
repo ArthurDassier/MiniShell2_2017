@@ -34,7 +34,7 @@ int my_setenv(char **tab, list_path *my_env)
 	list_path	*temp = my_env;
 
 	if (tab[3] != NULL) {
-		my_putstr("setenv: Too many arguments.\n");
+		my_puterror("setenv: Too many arguments.\n");
 		return (1);
 	}
 	while (temp != NULL) {
