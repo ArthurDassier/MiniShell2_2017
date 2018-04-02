@@ -5,7 +5,7 @@
 ## a_makefile_for_the_lib
 ##
 
-CC=		gcc -g3
+CC=		gcc
 
 OBJ=		$(SRC:.c=.o)
 

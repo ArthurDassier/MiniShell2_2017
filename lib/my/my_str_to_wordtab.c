@@ -62,7 +62,7 @@ char *clean_str(char *str)
 		}
 	}
 	tmp[j] = '\0';
-	if (tmp[--j] == ' ')
+	if (tmp[--j] == ' ' || tmp[j] == '\t')
 		tmp[j] = '\0';
 	return (tmp);
 }

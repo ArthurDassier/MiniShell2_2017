@@ -54,7 +54,7 @@ int no_tab_setenv(char **tab, list_path *my_env)
 
 	tmp[0] = tab[0];
 	tmp[1] = tab[1];
-	tmp[2] = malloc(sizeof(char));
+	tmp[2] = malloc(sizeof(char) * 2);
 	tmp[2][0] = '\0';
 	tmp[3] = NULL;
 	return (my_setenv(tmp, my_env));

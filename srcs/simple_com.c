@@ -14,19 +14,9 @@
 
 int error_status(int wstatus)
 {
-	int	i = 0;
-
 	if (WIFSIGNALED(wstatus)) {
-		if (WTERMSIG(wstatus)) {
-			write(2, "Segmentation fault", 19);
-			i = 1;
-		}
-		if (WCOREDUMP(wstatus)) {
-			write(2, " (core dumped)", 14);
-			i = 1;
-		}
-		if (i == 1)
-			write(2, "\n", 1);
+		if (WTERMSIG(wstatus))
+			my_puterror("Segmentation fault\n");
 		return (1);
 	}
 	return (0);

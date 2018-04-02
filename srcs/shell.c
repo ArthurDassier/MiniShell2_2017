@@ -16,6 +16,12 @@ static int try_build(char **tab, list_path *my_env)
 {
 	int	ret = 0;
 
+	if (tab == NULL)
+		return (0);
+	if (my_env == NULL) {
+		my_printf_err("%e: Command not found.\n", tab[0]);
+		return (0);
+	}
 	ret = try_env(tab, my_env);
 	if (ret != -1)
 		return (ret);
@@ -71,20 +77,20 @@ int shell(list_path *my_env, char **new_env)
 	char	*path;
 	char	**com;
 	char	*str;
-	int	ret = 0;
 
 	while (42) {
 		new_env = reset_env(my_env, new_env);
 		path = find_path(my_env);
-		com = my_path_to_wordtab(path, ':');
-		my_putstr("[Darth_Shell]$> ");
+		if (path != NULL)
+			com = my_path_to_wordtab(path, ':');
+		write(1, "$> ", 3);
 		str = get_next_line(0);
 		if (str == NULL) {
 			my_putstr("exit\n");
-			return (ret);
+			return (0);
 		}
 		if (str[0] != '\0')
-			ret = command(my_env, com, new_env, str);
+			command(my_env, com, new_env, str);
 	}
 	return (0);
 }
