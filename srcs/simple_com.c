@@ -17,7 +17,7 @@ int error_status(int wstatus)
 	if (WIFSIGNALED(wstatus)) {
 		if (WTERMSIG(wstatus))
 			my_puterror("Segmentation fault\n");
-		return (1);
+		return (139);
 	}
 	return (0);
 }
