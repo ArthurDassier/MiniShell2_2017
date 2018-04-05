@@ -56,6 +56,8 @@ int test_path(char **tab, char **com, char **new_env)
 
 	tab[0] = my_strcat("/", tab[0]);
 	while (com[i] != NULL) {
+		if (i == 0 && com[5])
+			com[i] += 5; 
 		j = access(my_strcat(com[i], tab[0]), F_OK || X_OK);
 		if (j == 0)
 			return (exec(my_strcat(com[i], tab[0]), tab, new_env));
