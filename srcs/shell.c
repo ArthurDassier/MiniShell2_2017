@@ -33,13 +33,19 @@ static char **reset_env(list_path *my_env, char **new_env)
 	return (new_env);
 }
 
-static int my_forking(char **tab, char **com,
+static int my_forking(char *str, char **com,
 char **new_env, list_path *my_env)
 {
 	pid_t	child_pid;
 	int	wstatus;
 	int	ret = 0;
+	int	nb_pipe = count_pipe(str);
+	char	**tab = NULL;
 
+	if (nb_pipe == 0)
+		tab = my_str_to_wordtab(str);
+	else
+		tab = my_piping(str, com, new_env, my_env);
 	child_pid = fork();
 	if (child_pid == 0)
 		ret = test_path(tab, com, new_env, my_env);
@@ -60,7 +66,7 @@ static int command(list_path *my_env, char **com, char **new_env, char *str)
 		tab = my_str_to_wordtab(big_tab[i]);
 		ret = try_build(tab, my_env);
 		if (ret == -1)
-			ret = my_forking(tab, com, new_env, my_env);
+			ret = my_forking(big_tab[i], com, new_env, my_env);
 		++i;
 	}
 	return (ret);

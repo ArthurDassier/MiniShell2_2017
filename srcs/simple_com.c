@@ -11,6 +11,8 @@
 #include "printf.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 int error_status(int wstatus)
 {
@@ -35,9 +37,15 @@ char *find_path(list_path *my_env)
 
 static int exec(char *order, char **tab, char **new_env)
 {
+	struct stat	sb;
+
 	if (tab != NULL)
 		++tab[0];
-	execve(order, tab, new_env);
+	if (stat(order, &sb) == 0 && S_ISDIR(sb.st_mode)) {
+		my_printf("%s: Permission denied.\n", order);
+		exit(0);
+	} else
+		execve(order, tab, new_env);
 	return (0);
 }
 
@@ -60,6 +68,6 @@ int test_path(char **tab, char **com, char **new_env, list_path *my_env)
 	}
 	if (access(++tab[0], F_OK || X_OK) == 0)
 		return (exec(tab[0], tab, new_env));
-	my_printf_err("%e: Command not found.\n", tab[0]);
+	my_printf("%s: Command not found.\n", tab[0]);
 	exit(1);
 }
