@@ -22,39 +22,28 @@ int count_pipe(char *str)
 	return (j);
 }
 
-void change_pipe(int in, int out)
-{
-	if (in != 0) {
-		dup2(in, 0);
-		close(in);
-	}
-	if (out != 1) {
-		dup2(out, 1);
-		close(out);
-	}
-}
-
-char **my_piping(char *str, char **com, char **new_env, list_path *my_env)
+void my_piping(char *str, char **com, char **new_env, list_path *my_env)
 {
 	int	fd[2];
-	int	save = 0;
-	int	i = 0;
+	int	save = 1;
+	int	wstatus;
 	pid_t	child_pid;
 	int	nb_pipe = count_pipe(str);
 	char	**tab_pipe = my_path_to_wordtab(str, '|');
 
-	while (i != nb_pipe) {
+	for (int i = 0; i != nb_pipe + 1; ++i) {
 		pipe(fd);
 		child_pid = fork();
 		if (child_pid == 0) {
-			change_pipe(save, fd[1]);
+			dup2(save, 0);
+			if (i == 0)
+				dup2(fd[1], 1);
 			test_path(my_str_to_wordtab(tab_pipe[i]), com,
 			new_env, my_env);
-		}
+		} else
+			if (wait(&wstatus) != -1)
+				error_status(wstatus);
 		close(fd[1]);
 		save = fd[0];
-		++i;
 	}
-	dup2(save, 0);
-	return (my_str_to_wordtab(tab_pipe[i]));
 }

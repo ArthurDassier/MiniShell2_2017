@@ -36,6 +36,6 @@ int try_unsetenv(char **, list_path *);
 int try_env_simple(list_path *);
 
 int count_pipe(char *);
-char **my_piping(char *, char **, char **, list_path *);
+void my_piping(char *, char **, char **, list_path *);
 
 #endif

@@ -44,8 +44,10 @@ char **new_env, list_path *my_env)
 
 	if (nb_pipe == 0)
 		tab = my_str_to_wordtab(str);
-	else
-		tab = my_piping(str, com, new_env, my_env);
+	else {
+		my_piping(str, com, new_env, my_env);
+		return (ret);
+	}
 	child_pid = fork();
 	if (child_pid == 0)
 		ret = test_path(tab, com, new_env, my_env);
@@ -74,10 +76,10 @@ static int command(list_path *my_env, char **com, char **new_env, char *str)
 
 int shell(list_path *my_env, char **new_env)
 {
+	size_t	len = 0;
 	char	*path;
 	char	**com;
-	char	*str;
-	int	ret = 0;
+	char	*str = NULL;
 
 	while (42) {
 		new_env = reset_env(my_env, new_env);
@@ -85,13 +87,13 @@ int shell(list_path *my_env, char **new_env)
 		if (path != NULL)
 			com = my_path_to_wordtab(path, ':');
 		write(1, "$> ", 3);
-		str = get_next_line(0);
-		if (str == NULL) {
+		if (getline(&str, &len, stdin) == -1) {
 			my_putstr("exit\n");
-			return (ret);
+			return (0);
 		}
+		str[my_strlen(str) - 1] = '\0';
 		if (str[0] != '\0')
-			ret = command(my_env, com, new_env, str);
+			command(my_env, com, new_env, str);
 	}
-	return (ret);
+	return (0);
 }

@@ -26,18 +26,18 @@ int count_word(char *str)
 	return (word);
 }
 
-int count_word_path(char *str)
+int count_word_p(char *str, char sep)
 {
 	int	word = 0;
 	int	letter = 0;
 	int	i = 0;
 
 	while (str[i] != '\0') {
-		if (str[i] != ':' && letter == 0) {
+		if (str[i] != sep && letter == 0) {
 			++word;
 			letter = 1;
 		}
-		if (str[i] == ':' && letter == 1)
+		if (str[i] == sep && letter == 1)
 			letter = 0;
 		++i;
 	}
@@ -69,7 +69,7 @@ char *clean_str(char *str)
 
 char **my_path_to_wordtab(char *str, char sep)
 {
-	char	**tab = malloc(sizeof(char *) * (count_word_path(str) + 1));
+	char	**tab = malloc(sizeof(char *) * (count_word_p(str, sep) + 1));
 	int	j = 0;
 	int	col = 0;
 
