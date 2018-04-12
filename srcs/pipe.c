@@ -36,7 +36,7 @@ void my_piping(char *str, char **com, char **new_env, list_path *my_env)
 		child_pid = fork();
 		if (child_pid == 0) {
 			dup2(save, 0);
-			if (i == 0)
+			if (i < nb_pipe)
 				dup2(fd[1], 1);
 			test_path(my_str_to_wordtab(tab_pipe[i]), com,
 			new_env, my_env);
