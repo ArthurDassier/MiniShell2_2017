@@ -12,28 +12,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-static int try_build(char **tab, list_path *my_env)
-{
-	int	ret = 0;
-
-	if (tab == NULL)
-		return (0);
-	if (my_env == NULL) {
-		my_printf_err("%e: Command not found.\n", tab[0]);
-		return (1);
-	}
-	ret = try_env(tab, my_env);
-	if (ret != -1)
-		return (ret);
-	if (my_strcmp(tab[0], "exit") == 0)
-		exit(my_getnbr(tab[1]));
-	if (my_strcmp(tab[0], "cd") == 0) {
-		the_cd(tab[1], my_env);
-		return (0);
-	}
-	return (-1);
-}
-
 static char **reset_env(list_path *my_env, char **new_env)
 {
 	list_path	*temp = my_env;
@@ -55,6 +33,22 @@ static char **reset_env(list_path *my_env, char **new_env)
 	return (new_env);
 }
 
+static int my_forking(char **tab, char **com,
+char **new_env, list_path *my_env)
+{
+	pid_t	child_pid;
+	int	wstatus;
+	int	ret = 0;
+
+	child_pid = fork();
+	if (child_pid == 0)
+		ret = test_path(tab, com, new_env, my_env);
+	else
+		if (wait(&wstatus) != -1)
+			return (error_status(wstatus));
+	return (ret);
+}
+
 static int command(list_path *my_env, char **com, char **new_env, char *str)
 {
 	char	**big_tab = my_path_to_wordtab(str, ';');
@@ -66,7 +60,7 @@ static int command(list_path *my_env, char **com, char **new_env, char *str)
 		tab = my_str_to_wordtab(big_tab[i]);
 		ret = try_build(tab, my_env);
 		if (ret == -1)
-			ret = test_path(tab, com, new_env);
+			ret = my_forking(tab, com, new_env, my_env);
 		++i;
 	}
 	return (ret);

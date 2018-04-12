@@ -8,7 +8,7 @@
 #include "my.h"
 #include "minishell1.h"
 
-static int try_env_simple(list_path *my_env)
+int try_env_simple(list_path *my_env)
 {
 	print_list(my_env);
 	return (0);
@@ -24,7 +24,7 @@ static int try_first_letter(char c)
 	return (0);
 }
 
-static int try_setenv(char **tab, list_path *my_env)
+int try_setenv(char **tab, list_path *my_env)
 {
 	int	i = 0;
 
@@ -48,7 +48,7 @@ static int try_setenv(char **tab, list_path *my_env)
 	return (0);
 }
 
-static int try_unsetenv(char **tab, list_path *my_env)
+int try_unsetenv(char **tab, list_path *my_env)
 {
 	if (!tab[1]) {
 		my_puterror("unsetenv: Too few arguments.\n");
@@ -56,18 +56,4 @@ static int try_unsetenv(char **tab, list_path *my_env)
 	} else
 		del_elem_list(&my_env, tab[1]);
 	return (0);
-}
-
-int try_env(char **tab, list_path *my_env)
-{
-	if (tab == NULL || my_env == NULL)
-		return (0);
-	if (my_strcmp(tab[0], "env") == 0 ||
-	(my_strcmp(tab[0], "setenv") == 0 && !tab[1]))
-		return (try_env_simple(my_env));
-	if (my_strcmp(tab[0], "setenv") == 0)
-		return (try_setenv(tab, my_env));
-	if (my_strcmp(tab[0], "unsetenv") == 0)
-		return (try_unsetenv(tab, my_env));
-	return (-1);
 }

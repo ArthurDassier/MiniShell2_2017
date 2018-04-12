@@ -23,6 +23,7 @@ SRCS	=	srcs/main.c		\
 		srcs/cd_build.c		\
 		srcs/env.c		\
 		srcs/err_env.c		\
+		srcs/builds.c		\
 
 OBJS	=	$(SRCS:.c=.o)
 
