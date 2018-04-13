@@ -16,12 +16,18 @@
 
 int error_status(int wstatus)
 {
+	int	ret = wstatus / 256;
+
 	if (WIFSIGNALED(wstatus)) {
-		if (WTERMSIG(wstatus))
+		if (WTERMSIG(wstatus) == 11) {
 			my_puterror("Segmentation fault\n");
-		return (139);
+			return (139);
+		} else if (WTERMSIG(wstatus) == 8) {
+			my_puterror("Floating exception\n");
+			return (136);
+		}
 	}
-	return (0);
+	return (ret);
 }
 
 char *find_path(list_path *my_env)
@@ -42,7 +48,7 @@ static int exec(char *order, char **tab, char **new_env)
 	if (tab != NULL)
 		++tab[0];
 	if (stat(order, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-		my_printf("%s: Permission denied.\n", order);
+		my_printf_err("%e: Permission denied.\n", order);
 		exit(0);
 	} else
 		execve(order, tab, new_env);
@@ -68,6 +74,6 @@ int test_path(char **tab, char **com, char **new_env, list_path *my_env)
 	}
 	if (access(++tab[0], F_OK || X_OK) == 0)
 		return (exec(tab[0], tab, new_env));
-	my_printf("%s: Command not found.\n", tab[0]);
+	my_printf_err("%e: Command not found.\n", tab[0]);
 	exit(1);
 }

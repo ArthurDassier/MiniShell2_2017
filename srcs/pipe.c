@@ -22,7 +22,7 @@ int count_pipe(char *str)
 	return (j);
 }
 
-void my_piping(char *str, char **com, char **new_env, list_path *my_env)
+int my_piping(char *str, char **com, char **new_env, list_path *my_env)
 {
 	int	fd[2];
 	int	save = 1;
@@ -42,8 +42,9 @@ void my_piping(char *str, char **com, char **new_env, list_path *my_env)
 			new_env, my_env);
 		} else
 			if (wait(&wstatus) != -1)
-				error_status(wstatus);
+				return (error_status(wstatus));
 		close(fd[1]);
 		save = fd[0];
 	}
+	return (wstatus);
 }
