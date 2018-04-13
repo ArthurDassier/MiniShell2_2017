@@ -64,7 +64,7 @@ int test_path(char **tab, char **com, char **new_env, list_path *my_env)
 	(my_strcmp(tab[0], "setenv") == 0 && !tab[1]))
 		exit(try_env_simple(my_env));
 	tab[0] = my_strcat("/", tab[0]);
-	while (com[i] != NULL) {
+	while (com[i] != NULL && com[i][0] != '\0') {
 		if (i == 0 && com[5])
 			com[i] += 5;
 		j = access(my_strcat(com[i], tab[0]), F_OK || X_OK);

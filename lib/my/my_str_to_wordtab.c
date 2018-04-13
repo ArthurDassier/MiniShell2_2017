@@ -41,6 +41,8 @@ int count_word_p(char *str, char sep)
 			letter = 0;
 		++i;
 	}
+	if (word == 0)
+		return (my_strlen(str));
 	return (word);
 }
 
@@ -62,7 +64,7 @@ char *clean_str(char *str)
 		}
 	}
 	tmp[j] = '\0';
-	if (tmp[--j] == ' ' || tmp[j] == '\t')
+	if (tmp[--j] && (tmp[j] == ' ' || tmp[j] == '\t'))
 		tmp[j] = '\0';
 	return (tmp);
 }

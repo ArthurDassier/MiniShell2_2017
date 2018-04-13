@@ -12,6 +12,29 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+char *clean_dot(char *str)
+{
+	char	*tmp = malloc(sizeof(char) * (my_strlen(str) + 1));
+	int	j = 0;
+	int	space = 1;
+
+	for (int i = 0; str[i] != '\0'; ++i) {
+		if (str[i] != ';') {
+			tmp[j] = str[i];
+			space = 0;
+			++j;
+		} else if ((str[i] == ';') && space == 0) {
+			tmp[j] = str[i];
+			++j;
+			space = 1;
+		}
+	}
+	tmp[j] = '\0';
+	if (tmp[--j] && tmp[j] == ';')
+		tmp[j] = '\0';
+	return (tmp);
+}
+
 static char **reset_env(list_path *my_env, char **new_env)
 {
 	list_path	*temp = my_env;
@@ -59,7 +82,7 @@ char **new_env, list_path *my_env)
 
 static int command(list_path *my_env, char **com, char **new_env, char *str)
 {
-	char	**big_tab = my_path_to_wordtab(str, ';');
+	char	**big_tab = my_path_to_wordtab(clean_dot(str), ';');
 	char	**tab;
 	int	ret = 0;
 	int	i = 0;

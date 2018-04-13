@@ -29,6 +29,7 @@ int my_piping(char *str, char **com, char **new_env, list_path *my_env)
 	int	wstatus;
 	pid_t	child_pid;
 	int	nb_pipe = count_pipe(str);
+	int	ret = 0;
 	char	**tab_pipe = my_path_to_wordtab(str, '|');
 
 	for (int i = 0; i != nb_pipe + 1; ++i) {
@@ -42,9 +43,9 @@ int my_piping(char *str, char **com, char **new_env, list_path *my_env)
 			new_env, my_env);
 		} else
 			if (wait(&wstatus) != -1)
-				return (error_status(wstatus));
+				ret = error_status(wstatus);
 		close(fd[1]);
 		save = fd[0];
 	}
-	return (wstatus);
+	return (ret);
 }
