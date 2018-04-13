@@ -48,8 +48,8 @@ static int exec(char *order, char **tab, char **new_env)
 	if (tab != NULL)
 		++tab[0];
 	if (stat(order, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-		my_printf_err("%e: Permission denied.\n", order);
-		exit(0);
+		my_printf("%s: Permission denied.\n", order);
+		exit(1);
 	} else
 		execve(order, tab, new_env);
 	return (0);
