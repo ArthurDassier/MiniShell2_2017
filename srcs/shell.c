@@ -106,6 +106,7 @@ int shell(list_path *my_env, char **new_env)
 	int	ret = 0;
 
 	while (42) {
+		str = NULL;
 		new_env = reset_env(my_env, new_env);
 		path = find_path(my_env);
 		if (path != NULL)
@@ -116,6 +117,7 @@ int shell(list_path *my_env, char **new_env)
 			return (ret);
 		}
 		str[my_strlen(str) - 1] = '\0';
+		str = clean_str(str);
 		if (str[0] != '\0')
 			ret = command(my_env, com, new_env, str);
 	}

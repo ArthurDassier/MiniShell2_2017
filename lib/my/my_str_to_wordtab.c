@@ -23,6 +23,8 @@ int count_word(char *str)
 			letter = 0;
 		++i;
 	}
+	if (word == 0)
+		return (my_strlen(str));
 	return (word);
 }
 
@@ -64,7 +66,7 @@ char *clean_str(char *str)
 		}
 	}
 	tmp[j] = '\0';
-	if (tmp[--j] && (tmp[j] == ' ' || tmp[j] == '\t'))
+	if (my_strlen(tmp) != 0 && (tmp[--j] == ' ' || tmp[j] == '\t'))
 		tmp[j] = '\0';
 	return (tmp);
 }
@@ -75,7 +77,6 @@ char **my_path_to_wordtab(char *str, char sep)
 	int	j = 0;
 	int	col = 0;
 
-	str = clean_str(str);
 	tab[col] = malloc(sizeof(char) * (my_strlen(str) + 1));
 	for (int i = 0; str[i] != '\0'; ++i) {
 		if (str[i] == sep) {
@@ -99,7 +100,6 @@ char **my_str_to_wordtab(char *str)
 	int	j = 0;
 	int	col = 0;
 
-	str = clean_str(str);
 	tab[col] = malloc(sizeof(char) * (my_strlen(str) + 1));
 	for (int i = 0; str[i] != '\0'; ++i) {
 		if (str[i] == ' ' || str[i] == '\t') {

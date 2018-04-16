@@ -26,6 +26,7 @@ void print_list(list_path *);
 int my_setenv(char **, list_path *);
 void my_setpath(char *, char *, list_path *);
 int error_status(int);
+char *clean_str(char *);
 
 int try_env(char **, list_path *);
 int no_tab_setenv(char **, list_path *);
