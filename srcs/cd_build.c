@@ -63,10 +63,13 @@ void the_cd(char *tab, list_path *my_env)
 		chdir(path);
 	}
 	else if (chdir(path) == -1 && tab[0] != '-') {
-		if (open(path,  O_RDONLY) < 0)
-			my_printf("%s: No such file or directory.\n", tab);
-		else
-			my_printf("%s: Not a directory.\n", tab);
+		if (open(path,  O_RDONLY) < 0) {
+			my_putstr(tab);
+			my_putstr(": No such file or directory.\n");
+		} else {
+			my_putstr(tab);
+			my_putstr("Not a directory.\n");
+		}
 		return;
 	}
 	else if (tab[0] == '-')

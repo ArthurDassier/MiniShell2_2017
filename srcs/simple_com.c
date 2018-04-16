@@ -48,7 +48,8 @@ static int exec(char *order, char **tab, char **new_env)
 	if (tab != NULL)
 		++tab[0];
 	if (stat(order, &sb) == 0 && S_ISDIR(sb.st_mode)) {
-		my_printf("%s: Permission denied.\n", order);
+		my_putstr(order);
+		my_putstr(": Permission denied.\n");
 		exit(1);
 	} else
 		execve(order, tab, new_env);
@@ -74,6 +75,7 @@ int test_path(char **tab, char **com, char **new_env, list_path *my_env)
 	}
 	if (access(++tab[0], F_OK || X_OK) == 0)
 		return (exec(tab[0], tab, new_env));
-	my_printf("%s: Command not found.\n", tab[0]);
+	my_putstr(tab[0]);
+	my_putstr(": Command not found.\n");
 	exit(1);
 }
