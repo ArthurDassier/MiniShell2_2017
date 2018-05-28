@@ -50,7 +50,9 @@ int try_setenv(char **tab, list_path *my_env)
 
 int try_unsetenv(char **tab, list_path *my_env)
 {
-	if (!tab[1]) {
+	int	i = count_line(tab);
+
+	if (i == 1) {
 		my_puterror("unsetenv: Too few arguments.\n");
 		return (1);
 	} else

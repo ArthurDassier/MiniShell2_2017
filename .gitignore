@@ -1,6 +1,3 @@
-norm.rb
-norminette.py
-a.out
-maim.c
-text
-test_seg.c
+*.a
+*.o
+mysh

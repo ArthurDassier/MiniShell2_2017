@@ -8,6 +8,15 @@
 #include "minishell1.h"
 #include "printf.h"
 
+int count_line(char **tab)
+{
+	int i = 0;
+
+	while (tab[i])
+		++i;
+	return (i);
+}
+
 int try_build(char **tab, list_path *my_env)
 {
 	int	ret = 0;
@@ -32,9 +41,11 @@ int try_build(char **tab, list_path *my_env)
 
 int try_env(char **tab, list_path *my_env)
 {
+	int	i = count_line(tab);
+
 	if (tab == NULL || my_env == NULL)
 		return (0);
-	if (tab[1] && my_strcmp(tab[0], "setenv") == 0)
+	if (i > 1 && my_strcmp(tab[0], "setenv") == 0)
 		return (try_setenv(tab, my_env));
 	if (my_strcmp(tab[0], "unsetenv") == 0)
 		return (try_unsetenv(tab, my_env));
